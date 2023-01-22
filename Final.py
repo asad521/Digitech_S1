@@ -3,11 +3,12 @@ from tkinter import ttk
 from tkinter import  font
 from tkinter.messagebox import askyesno
 from tkinter import messagebox
-from Grid import print_hi
 from tkinter  import *
 from PIL import ImageTk, Image
-
-
+# Import other gui and mqtt
+from Grid import print_hi
+from mqqtpub import run
+import threading
 #all button and closing window functions
 # trigger on buttons
 def popup():
@@ -17,8 +18,11 @@ def popup():
     else:
         print('Answer is not')
 
+def thread():
+    global long_thread
+    long_thread = threading.Thread(target=run,kwargs={'loop_trigger': True})
+    long_thread.start()
 
-# root window
 root = tk.Tk()
 root.title('RetroVision Control Panel')
 root.resizable(0, 0)
@@ -57,14 +61,18 @@ Segmentation.grid(column=1, row=1, sticky=tk.E, padx=20, pady=40)
 TrainNTest = Button(root, text="Train & Test",font=font_style,command=popup)
 TrainNTest.grid(column=0, row=2, sticky=tk.W, padx=20, pady=40)
 # MQTT Button row 2
-mqtt = Button(root, text="Publish values",font=font_style)
+mqtt = Button(root, text="Publish values",font=font_style ,command=thread)
 mqtt.grid(column=1, row=2, sticky=tk.E, padx=20, pady=40)
+
+
 
 #exit window
 def confirm():
     ans = askyesno(title='Exit', message="Do you want to close the window?")
     if ans:
         root.destroy()
+        run(False)
+        print('mqqt terminated')
 root.protocol("WM_DELETE_WINDOW",confirm)
 
 root.mainloop()
