@@ -5,7 +5,7 @@ import time
 import threading
 from paho.mqtt import client as mqtt_client
 import json
-
+stop_threading=threading.Event()
 broker = 'thingsboard.cloud'
 port = 1883
 topic = "v1/devices/me/telemetry"
@@ -13,7 +13,6 @@ topic = "v1/devices/me/telemetry"
 client_id = 'retrovision'
 username = 'retrovision'
 password = 'retrovision123'
-
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -29,9 +28,13 @@ def connect_mqtt():
 
 
 def publish(client,loop_trigger):
+    if loop_trigger==False:
+        stop_threading.set()
     msg_count = 0
     print('status of loop_trigger',loop_trigger)
     while loop_trigger:
+        if stop_threading.is_set():
+            break
         print('value of loop trigger in loop',loop_trigger)
         time.sleep(1)
         msg = f"messages: {msg_count}"
@@ -46,9 +49,7 @@ def publish(client,loop_trigger):
          "light_3": random.randint(0, 1),
          "light_4": random.randint(0, 1)
         }
-
         payload = json.dumps(Data)
-
         result = client.publish(topic, payload)
         # result: [0, 1]
         status = result[0]
