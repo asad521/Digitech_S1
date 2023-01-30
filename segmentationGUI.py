@@ -9,7 +9,7 @@ import ttkbootstrap as ttk
 import cv2
 import PIL.ImageTk
 from PIL import Image
-import segmentattribute
+import Section
 import json
 
 
