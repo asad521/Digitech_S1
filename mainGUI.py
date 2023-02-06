@@ -10,12 +10,14 @@ from segmentationGUI import main
 from mqqtpub import run
 import threading
 import os
-
+from second_window import prog_bar
+from progessBarClass import progess_bar_class
 # ===========================Button Actions===============================================
 def popup():
     response = messagebox.askyesno("Neutral Network Training","Do you want to start training")
     if response == 1:
         print('Answer is Yes')
+        prog_bar()
     else:
         print('Answer is not')
 
@@ -51,23 +53,24 @@ username_entry = ttk.Entry(root)
 image_label.grid(column=1, row=0, sticky=tk.E, padx=5, pady=5)
 #=======================Buttons===================================
 #   Button R1C1
-#print(os.path.abspath(os.path.dirname(__file__)) + "\images\camera.png")
-camera = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\camera.png")
+print(os.path.abspath(os.path.dirname(__file__)) + "\images\camera.png")
+
+camera = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\images\camera.png")
 camera = camera.subsample(4, 4)
 Load_RetroVision = Button(root,command=main,image = camera,compound=LEFT)
 Load_RetroVision.grid(column=0, row=1, sticky=tk.W, padx=20, pady=40)
 #   Button R1C2
-nn_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\nn.png")
+nn_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\images\nn.png")
 nn_image = nn_image.subsample(4, 4)
 Neural_Network=Button(root,image = nn_image,compound=LEFT,command=popup)
 Neural_Network.grid(column=1, row=1, sticky=tk.E, padx=20, pady=40)
 #   Button R2C2
-vv_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\visualization.png")
+vv_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\images\visualization.png")
 vv_image = vv_image.subsample(4, 4)
 visualization = Button(root,image=vv_image,font=font_style,command=lambda:start_mqtt_thread(True))
 visualization.grid(column=0, row=2, sticky=tk.W, padx=20, pady=40)
 # MQTT Button row 2
-settings_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\settings.png")
+settings_image = PhotoImage(file=r"C:\Users\ASAD\Desktop\Digi Project\Gui\images\settings.png")
 settings_image = settings_image.subsample(4, 4)
 Settings = Button(root,image=settings_image)
 Settings.grid(column=1, row=2, sticky=tk.E, padx=20, pady=40)
@@ -80,3 +83,4 @@ def confirm():
         print('mqqt terminated')
 root.protocol("WM_DELETE_WINDOW",confirm)
 root.mainloop()
+

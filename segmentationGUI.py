@@ -81,6 +81,7 @@ class GUI:
 
         # Then we create the main window. It uses the width and height provided by the config file.
         self.window = tkinter.Toplevel()
+        self.window.grab_set()
         self.window.geometry(str(GUIWIDTH) + "x" + str(GUIHEIGHT) + "+"
                              + str(int(SCREENWIDTH / 2 - ((GUIWIDTH + 350) / 2))) + "+"
                              + str(int(SCREENHEIGHT / 2 - GUIHEIGHT / 2)))

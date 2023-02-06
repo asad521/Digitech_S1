@@ -1,6 +1,6 @@
 # python 3.6
 
-import random
+from detected_data import Data
 import time
 import threading
 from paho.mqtt import client as mqtt_client
@@ -9,6 +9,7 @@ stop_threading=threading.Event()
 broker = 'thingsboard.cloud'
 port = 1883
 topic = "v1/devices/me/telemetry"
+
 # generate clievint ID with pub prefix randomly
 client_id = 'retrovision'
 username = 'retrovision'
@@ -26,6 +27,8 @@ def connect_mqtt():
     client.connect(broker, port)
     return client
 
+#get data from detected file
+current,voltages,voltages_yellow,segement_top,segement_bot,light_1,light_2,light_3,light_4=Data
 
 def publish(client,loop_trigger):
     if loop_trigger==False:
@@ -38,17 +41,7 @@ def publish(client,loop_trigger):
         print('value of loop trigger in loop',loop_trigger)
         time.sleep(1)
         msg = f"messages: {msg_count}"
-        Data = {
-        "current": random.randint(0, 500),
-         "voltages": random.randint(20, 25),
-         "voltages_yellow": random.randint(20, 25),
-         "7segement_top": random.randint(5555, 7777),
-         "7segement_bot": random.randint(8888, 9999),
-         "light_1": random.randint(0, 1),
-         "light_2": random.randint(0, 1),
-         "light_3": random.randint(0, 1),
-         "light_4": random.randint(0, 1)
-        }
+
         payload = json.dumps(Data)
         result = client.publish(topic, payload)
         # result: [0, 1]
